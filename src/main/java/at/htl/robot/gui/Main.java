@@ -6,7 +6,13 @@ import processing.core.PApplet;
 
 public class Main extends PApplet {
 
-    // Hier die Member-Attribute eintragen
+    int leftMargin = 28;
+    int upperMargin = 50;
+    int boxlenght = 50;
+    Robot robot;
+
+
+
 
     public static void main(String[] args) {
         PApplet.main("at.htl.robot.gui.Main", args);
@@ -19,6 +25,9 @@ public class Main extends PApplet {
     public void setup() {
         background(209); //https://processing.org/tutorials/color/
 
+        robot = new Robot();
+        robot.setX(5);          // Anzhal von x die man einrücken muss
+        robot.setY(7);
 
     }
 
@@ -26,6 +35,30 @@ public class Main extends PApplet {
      * Diese Methode wird iterativ durchlaufen (wie loop() beim Arduino)
      */
     public void draw() {
+        for (int i = 0; i < 11; i++) {
+            line(
+                    leftMargin + i * boxlenght,
+                     upperMargin,
+                    leftMargin + i * boxlenght,
+                    upperMargin + 10 * boxlenght
+            );
+
+            line(
+                    leftMargin,
+                    upperMargin + i * boxlenght,
+                    leftMargin + 10 * boxlenght,
+                    upperMargin + i * boxlenght
+            );
+
+            int  boxCenterX = leftMargin + robot.getX() * boxlenght  - boxlenght / 2;
+            int boxCenterY = upperMargin + robot.getY() * boxlenght  - boxlenght / 2;
+
+            ellipse(boxCenterX, boxCenterY,
+                    (int) (boxlenght * 0.8),
+                    (int) (boxlenght * 0.8)
+            );
+
+        }
 
     }
 
@@ -45,7 +78,7 @@ public class Main extends PApplet {
      * Erstellen Sie eine eigene Methode zum Löschen des Bildschirms
      */
     public void deleteAll() {
-
+        background(209);
     }
 
     /**
@@ -55,11 +88,11 @@ public class Main extends PApplet {
         println("pressed " + key + " " + keyCode);
 
         if (key == 'f' || key == 'F') {
-
+            robot.stepForward();
         } else if (key == 'l' || key == 'L') {
-
+            robot.rotateLeft();
         }
-
+        deleteAll();
     }
 
 //    public void keyTyped() {
